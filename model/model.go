@@ -1,7 +1,7 @@
 package model
 
 type Quote struct {
-	ID     uint   `json:"id"`
+	ID     int    `json:"id"`
 	Author string `json:"author"`
 	Text   string `json:"text"`
 }

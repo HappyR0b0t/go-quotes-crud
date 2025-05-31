@@ -12,7 +12,7 @@ import (
 type QuotesStorage struct {
 	mu     sync.Mutex
 	quotes map[int]model.Quote
-	nextID uint
+	nextID int
 }
 
 func NewQuotesStorage() *QuotesStorage {
@@ -27,18 +27,20 @@ func (s *QuotesStorage) Create(quote model.Quote) model.Quote {
 	defer s.mu.Unlock()
 
 	quote.ID = s.nextID
-	s.quotes[int(s.nextID)] = quote
+	s.quotes[s.nextID] = quote
 	s.nextID++
 	return quote
 }
 
-func (s *QuotesStorage) List() []model.Quote {
+func (s *QuotesStorage) List(author string) []model.Quote {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	quotes := make([]model.Quote, 0, len(s.quotes))
-	for _, u := range s.quotes {
-		quotes = append(quotes, u)
+	for _, q := range s.quotes {
+		if author == "" || q.Author == author {
+			quotes = append(quotes, q)
+		}
 	}
 	return quotes
 }

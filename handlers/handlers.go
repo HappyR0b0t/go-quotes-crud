@@ -31,16 +31,7 @@ func (h *QuotesHandler) CreateQuote(w http.ResponseWriter, r *http.Request) {
 
 func (h *QuotesHandler) ListQuotes(w http.ResponseWriter, r *http.Request) {
 	author := r.URL.Query().Get("author")
-	if len(author) != 0 {
-		quotes, err := h.Store.GetByAuthor(author)
-	} else {
-		quotes := h.Store.List()
-	}
-
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusNotFound)
-		return
-	}
+	quotes := h.Store.List(author)
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(quotes)
@@ -69,15 +60,3 @@ func (h *QuotesHandler) GetRandomQuote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(quote)
 }
-
-// func (h *QuotesHandler) GetByAuthor(w http.ResponseWriter, r *http.Request) {
-// 	author := mux.Vars(r)["author"]
-
-// 	quote, err := h.Store.GetByAuthor(author)
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusNotFound)
-// 		return
-// 	}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	json.NewEncoder(w).Encode(quote)
-// }
