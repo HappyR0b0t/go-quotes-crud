@@ -9,6 +9,13 @@ import (
 	model "example.com/go-scout-ai-crud/model"
 )
 
+type QuoteStorer interface {
+	Create(model.Quote) model.Quote
+	List(author string) []model.Quote
+	Delete(id int) error
+	GetRandom() (model.Quote, error)
+}
+
 type QuotesStorage struct {
 	mu     sync.Mutex
 	quotes map[int]model.Quote
