@@ -11,10 +11,10 @@ import (
 )
 
 type QuotesHandler struct {
-	Store storage.QuoteStorer
+	Store *storage.QuotesStorage
 }
 
-func NewQuotesHandler(store storage.QuoteStorer) *QuotesHandler {
+func NewQuotesHandler(store *storage.QuotesStorage) *QuotesHandler {
 	return &QuotesHandler{Store: store}
 }
 

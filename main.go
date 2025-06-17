@@ -10,13 +10,8 @@ import (
 )
 
 func main() {
-	// store := storage.NewQuotesStorage()
-	store, err := storage.NewPostgresStorage("postgres://user:password@localhost:5432/dbname")
-	if err != nil {
-		log.Fatal("Could not connect to database: ", err)
-	}
+	store := storage.NewQuotesStorage()
 	quotesHandler := handlers.NewQuotesHandler(store)
-
 	r := mux.NewRouter()
 
 	r.HandleFunc("/quotes", quotesHandler.CreateQuote).Methods("POST")
