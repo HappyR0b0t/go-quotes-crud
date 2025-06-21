@@ -11,10 +11,10 @@ import (
 )
 
 type QuotesHandler struct {
-	Store storage.QuoteStorer
+	Store *storage.PostgresStorage
 }
 
-func NewQuotesHandler(store storage.QuoteStorer) *QuotesHandler {
+func NewQuotesHandler(store *storage.PostgresStorage) *QuotesHandler {
 	return &QuotesHandler{Store: store}
 }
 
@@ -31,7 +31,12 @@ func (h *QuotesHandler) CreateQuote(w http.ResponseWriter, r *http.Request) {
 
 func (h *QuotesHandler) ListQuotes(w http.ResponseWriter, r *http.Request) {
 	author := r.URL.Query().Get("author")
-	quotes := h.Store.List(author)
+	quotes, err := h.Store.List(author)
+
+	if err != nil {
+		http.Error(w, "failed to fetch quotes", http.StatusInternalServerError)
+		return
+	}
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(quotes)

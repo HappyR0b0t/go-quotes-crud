@@ -11,7 +11,7 @@ import (
 
 func main() {
 	// store := storage.NewQuotesStorage()
-	store, err := storage.NewPostgresStorage("postgres://user:password@localhost:5432/dbname")
+	store, err := storage.NewPostgresStorage("postgres://user:password@localhost:5432/dbname?sslmode=disable")
 	if err != nil {
 		log.Fatal("Could not connect to database: ", err)
 	}
