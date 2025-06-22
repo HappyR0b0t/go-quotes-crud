@@ -1,17 +1,34 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	handlers "example.com/go-scout-ai-crud/handlers"
 	storage "example.com/go-scout-ai-crud/storage"
+
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	// store := storage.NewQuotesStorage()
-	store, err := storage.NewPostgresStorage("postgres://user:password@localhost:5432/dbname?sslmode=disable")
+	if err := godotenv.Load(); err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+
+	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+		user, password, host, port, dbname,
+	)
+
+	store, err := storage.NewPostgresStorage(connString)
 	if err != nil {
 		log.Fatal("Could not connect to database: ", err)
 	}

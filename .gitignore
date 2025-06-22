@@ -1,0 +1,47 @@
+# Binaries for the current project
+# Go build outputs binaries in the current directory by default
+# or in a specified output directory like 'bin/'
+*.exe
+*.dll
+*.so
+*.dylib
+*.bin
+*/bin/
+
+# Compiled packages and test binaries
+# These are typically found in the 'pkg/' directory within GOPATH
+# or in the module cache
+pkg/
+*/pkg/
+*.test
+*.out
+
+# Dependency caches
+# Go module cache and vendor directory (if used)
+.cache/
+vendor/
+
+# Editor/IDE specific files
+.idea/ # IntelliJ IDEA
+.vscode/ # VS Code
+*.sublime-project
+*.sublime-workspace
+.DS_Store # macOS specific
+Thumbs.db # Windows specific
+
+# Log files
+*.log
+
+# Environment variables and sensitive data
+.env
+.env.*
+*.local
+
+# Coverage reports
+*.coverprofile
+
+# Temporary files
+*~
+#*#
+.#*
+.terraform/ # Terraform related files if used in the project
