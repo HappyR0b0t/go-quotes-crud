@@ -28,9 +28,11 @@ func (s *PostgresStorage) Create(quote model.Quote) model.Quote {
 		quote.Author,
 		quote.Text,
 	).Scan(&quote.ID)
+
 	if err != nil {
 		panic(err)
 	}
+
 	return quote
 }
 

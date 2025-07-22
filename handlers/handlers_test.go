@@ -3,6 +3,7 @@ package quote_test
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strconv"
@@ -15,6 +16,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var connString string
+
 func setupRouter(handler *quote.QuotesHandler) *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/quotes", handler.CreateQuote).Methods("POST")
@@ -25,7 +28,10 @@ func setupRouter(handler *quote.QuotesHandler) *mux.Router {
 }
 
 func TestCreateQuote(t *testing.T) {
-	store := storage.NewQuotesStorage()
+	store, err := storage.NewPostgresStorage(connString)
+	if err != nil {
+		fmt.Print("error")
+	}
 	handler := quote.NewQuotesHandler(store)
 	r := setupRouter(handler)
 
@@ -43,7 +49,10 @@ func TestCreateQuote(t *testing.T) {
 }
 
 func TestListQuotes(t *testing.T) {
-	store := storage.NewQuotesStorage()
+	store, err := storage.NewPostgresStorage(connString)
+	if err != nil {
+		fmt.Print("error")
+	}
 	store.Create(model.Quote{Author: "Confucius", Text: "Simplicity."})
 	handler := quote.NewQuotesHandler(store)
 	r := setupRouter(handler)
@@ -59,7 +68,10 @@ func TestListQuotes(t *testing.T) {
 }
 
 func TestDeleteQuote(t *testing.T) {
-	store := storage.NewQuotesStorage()
+	store, err := storage.NewPostgresStorage(connString)
+	if err != nil {
+		fmt.Print("error")
+	}
 	created := store.Create(model.Quote{Author: "Confucius", Text: "Simplicity."})
 	handler := quote.NewQuotesHandler(store)
 	r := setupRouter(handler)
@@ -76,7 +88,10 @@ func TestDeleteQuote(t *testing.T) {
 }
 
 func TestGetRandomQuote(t *testing.T) {
-	store := storage.NewQuotesStorage()
+	store, err := storage.NewPostgresStorage(connString)
+	if err != nil {
+		fmt.Print("error")
+	}
 	store.Create(model.Quote{Author: "Confucius", Text: "Wisdom."})
 	handler := quote.NewQuotesHandler(store)
 	r := setupRouter(handler)
