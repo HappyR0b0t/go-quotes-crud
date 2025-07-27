@@ -65,3 +65,9 @@ func (h *QuotesHandler) GetRandomQuote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(quote)
 }
+
+func (h *QuotesHandler) Index(w http.ResponseWriter, r *http.Request) {
+	response := "Henlo!"
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(response)
+}

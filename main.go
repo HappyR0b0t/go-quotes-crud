@@ -24,18 +24,20 @@ func main() {
 	password := os.Getenv("DB_PASSWORD")
 	dbname := os.Getenv("DB_NAME")
 
-	connString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
+	ConnString := fmt.Sprintf("postgres://%s:%s@%s:%s/%s",
 		user, password, host, port, dbname,
 	)
 
-	store, err := storage.NewPostgresStorage(connString)
+	store, err := storage.NewPostgresStorage(ConnString)
 	if err != nil {
 		log.Fatal("Could not connect to database: ", err)
 	}
+
 	quotesHandler := handlers.NewQuotesHandler(store)
 
 	r := mux.NewRouter()
 
+	r.HandleFunc("/", quotesHandler.Index).Methods("GET")
 	r.HandleFunc("/quotes", quotesHandler.CreateQuote).Methods("POST")
 	r.HandleFunc("/quotes", quotesHandler.ListQuotes).Methods("GET")
 	r.HandleFunc("/quotes/random", quotesHandler.GetRandomQuote).Methods("GET")
