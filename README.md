@@ -1,7 +1,8 @@
 # Go Quotes REST API
 
-A simple in-memory REST API for managing quotes.  
+A simple REST API for managing quotes.  
 Built with Go, using Gorilla Mux for routing.
+There is an option on how to store data: in-memory or in data base
 
 ## Features
 
