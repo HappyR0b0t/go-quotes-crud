@@ -3,9 +3,10 @@ package storage
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	model "example.com/go-scout-ai-crud/model"
-	"github.com/jackc/pgx"
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -17,6 +18,9 @@ func NewPostgresStorage(connString string) (*PostgresStorage, error) {
 	dbpool, err := pgxpool.New(context.Background(), connString)
 	if err != nil {
 		return nil, err
+	}
+	if err := dbpool.Ping(context.Background()); err != nil {
+		return nil, fmt.Errorf("failed to ping database: %w", err)
 	}
 	return &PostgresStorage{db: dbpool}, err
 }
