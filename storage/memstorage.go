@@ -88,13 +88,13 @@ func (m *MemStorage) GetQuotesByAuthor(ctx context.Context, author string) ([]mo
 	return res, nil
 }
 
-// func (m *MemStorage) DeleteQuote(ctx context.Context, id int) error {
-// 	m.mu.Lock()
-// 	defer m.mu.Unlock()
+func (m *MemStorage) DeleteQuote(ctx context.Context, id int) error {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
-// 	if _, ok := m.quotes[id]; !ok {
-// 		return errors.New("quote not found")
-// 	}
-// 	delete(m.quotes, id)
-// 	return nil
-// }
+	if _, ok := m.quotes[id]; !ok {
+		return errors.New("quote not found")
+	}
+	delete(m.quotes, id)
+	return nil
+}
