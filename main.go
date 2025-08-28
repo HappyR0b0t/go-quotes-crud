@@ -51,9 +51,9 @@ func main() {
 
 	r.HandleFunc("/", quotesHandler.Index).Methods("GET")
 	r.HandleFunc("/quotes", quotesHandler.CreateQuote).Methods("POST")
-	// r.HandleFunc("/quotes", quotesHandler.ListQuotes).Methods("GET")
-	// r.HandleFunc("/quotes/random", quotesHandler.GetRandomQuote).Methods("GET")
-	// r.HandleFunc("/quotes/{id:[0-9]+}", quotesHandler.DeleteQuote).Methods("DELETE")
+	r.HandleFunc("/quotes", quotesHandler.ListQuotes).Methods("GET")
+	r.HandleFunc("/quotes/random", quotesHandler.GetRandomQuote).Methods("GET")
+	r.HandleFunc("/quotes/{id:[0-9]+}", quotesHandler.DeleteQuote).Methods("DELETE")
 
 	log.Println("Server is running on :8080")
 	log.Fatal(http.ListenAndServe(":8080", r))

@@ -2,6 +2,8 @@ package storage
 
 import (
 	"context"
+	"errors"
+	"math/rand"
 	"sync"
 
 	model "example.com/go-scout-ai-crud/model"
@@ -52,39 +54,39 @@ func (m *MemStorage) AddQuote(ctx context.Context, q model.Quote) (int, error) {
 // 	return quote, nil
 // }
 
-// func (m *MemStorage) GetRandomQuote(ctx context.Context) (model.Quote, error) {
-// 	m.mu.Lock()
-// 	defer m.mu.Unlock()
+func (m *MemStorage) GetRandomQuote(ctx context.Context) (model.Quote, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
-// 	ids := make([]int, 0, len(m.quotes))
-// 	for k := range m.quotes {
-// 		ids = append(ids, k)
-// 	}
-// 	randomIndex := ids[rand.Intn(len(ids))]
-// 	quote, exists := m.quotes[randomIndex]
+	ids := make([]int, 0, len(m.quotes))
+	for k := range m.quotes {
+		ids = append(ids, k)
+	}
+	randomIndex := ids[rand.Intn(len(ids))]
+	quote, exists := m.quotes[randomIndex]
 
-// 	if !exists {
-// 		return model.Quote{}, errors.New("quote not found")
-// 	}
-// 	return quote, nil
-// }
+	if !exists {
+		return model.Quote{}, errors.New("quote not found")
+	}
+	return quote, nil
+}
 
-// func (m *MemStorage) GetQuotesByAuthor(ctx context.Context, author string) ([]model.Quote, error) {
-// 	m.mu.Lock()
-// 	defer m.mu.Unlock()
+func (m *MemStorage) GetQuotesByAuthor(ctx context.Context, author string) ([]model.Quote, error) {
+	m.mu.Lock()
+	defer m.mu.Unlock()
 
-// 	var res []model.Quote
+	var res []model.Quote
 
-// 	for _, q := range m.quotes {
-// 		if q.Author == author {
-// 			res = append(res, q)
-// 		}
-// 	}
-// 	if len(res) == 0 {
-// 		return []model.Quote{}, errors.New("quote not found")
-// 	}
-// 	return res, nil
-// }
+	for _, q := range m.quotes {
+		if q.Author == author {
+			res = append(res, q)
+		}
+	}
+	if len(res) == 0 {
+		return []model.Quote{}, errors.New("quote not found")
+	}
+	return res, nil
+}
 
 // func (m *MemStorage) DeleteQuote(ctx context.Context, id int) error {
 // 	m.mu.Lock()
